@@ -4,8 +4,6 @@ import Layout from "../components/layout"
 import Seo from "../components/seo"
 import { graphql, StaticQuery } from "gatsby"
 import Post from "../components/Post"
-import { getImage } from "gatsby-plugin-image"
-
 
 
 
@@ -19,19 +17,15 @@ const IndexPage = () => (
       render={data => {
         return (
           <div>
-            {data.allMarkdownRemark.edges.map(({ node }) => {
-              const fluid = getImage(node.frontmatter.image) // Access node.frontmatter.image inside the loop
-              return (
-                <Post
-                  title={node.frontmatter.title}
-                  author={node.frontmatter.author}
-                  path={node.frontmatter.path}
-                  body={node.excerpt}
-                  date={node.frontmatter.date}
-                  fluid={fluid}
-                />
-              )
-            })}
+            {data.allMarkdownRemark.edges.map(({ node }) => (
+              <Post title={node.frontmatter.title}
+                author={node.frontmatter.author}
+                path={node.frontmatter.path}
+                body={node.excerpt}
+                date={node.frontmatter.date}
+                fluid={node.frontmatter.image.childImageSharp.fluid}
+              />
+            ))}
           </div>
         )
       }}
@@ -52,7 +46,10 @@ const indexQuery = graphql`
             path
             image{
               childImageSharp{
-                gatsbyImageData(width: 600)
+                fluid(maxWidth: 600) {
+                  ...GatsbyImageSharpFluid
+                
+                }
               }
             }
           }
