@@ -39,12 +39,12 @@ const Sidebar = () => (
                                     const fluid = getImage(node.frontmatter.image) // Access node.frontmatter.image inside the loop
                                     return (
                                         <Card key={node.id}>
-                                            <Link to={node.frontmatter.path}>
-                                                <GatsbyImage className="card-image-top" image={fluid} />
+                                            <Link to={node.fields.slug}>
+                                                <GatsbyImage className="card-image-top" image={fluid} alt="描述图片内容的文本" />
                                             </Link>
                                             <CardBody>
                                                 <CardTitle>
-                                                    <Link to={node.frontmatter.path}>{node.frontmatter.title}</Link>
+                                                    <Link to={node.fields.slug}>{node.frontmatter.title}</Link>
                                                 </CardTitle>
                                             </CardBody>
                                         </Card>
@@ -71,12 +71,14 @@ const sidebarQuery = graphql`
                     id
                     frontmatter {
                         title
-                        path
                         image{
                             childImageSharp{
                                 gatsbyImageData(width: 300)
                             }
                         }
+                    }
+                    fields {
+                        slug
                     }
                 }
             }

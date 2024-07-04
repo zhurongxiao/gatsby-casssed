@@ -27,9 +27,10 @@ const IndexPage = () => (
                   const fluid = getImage(node.frontmatter.image) // Access node.frontmatter.image inside the loop
                   return (
                     <Post
+                      key={node.id}
                       title={node.frontmatter.title}
                       author={node.frontmatter.author}
-                      path={node.frontmatter.path}
+                      slug={node.fields.slug}
                       body={node.excerpt}
                       date={node.frontmatter.date}
                       fluid={fluid}
@@ -53,7 +54,7 @@ const IndexPage = () => (
 )
 
 const indexQuery = graphql`
-  query {
+  query indexQuery{
       allMarkdownRemark(sort: {frontmatter: {date: DESC}}){
       edges{
         node{
@@ -62,7 +63,6 @@ const indexQuery = graphql`
             title
             date(formatString: "MMM Do YYYY")
             author
-            path
             tags
             image{
               childImageSharp{
@@ -70,6 +70,9 @@ const indexQuery = graphql`
               }
             }
           }
+            fields{
+              slug
+            }
           excerpt
         }
       }
