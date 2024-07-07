@@ -3,10 +3,9 @@
 
 import React from 'react'
 import Layout from '../components/layout'
-import Sidebar from '../components/Sidebar'
 import { graphql, Link } from 'gatsby'
 import SEO from '../components/seo'
-import { Row, Card, CardBody, CardSubtitle, Badge, Col } from 'react-bootstrap'
+import { Card, CardBody, CardSubtitle, Badge } from 'react-bootstrap'
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import { slugify } from '../util/utilityFunctions'
@@ -16,43 +15,37 @@ const SinglePost = ({ data }) => {
     const fluid = getImage(post.image) // Access node.frontmatter.image inside the loop
 
     return (
-        <Layout>
+        <Layout pageTitle={post.title}>
             <SEO title={post.title} />
-            <h1>{post.title}</h1>
-            <Row>
-                <Col md="8">
-                    <Card>
-                        <GatsbyImage className="card-image-top" image={fluid} alt="描述图片内容的文本" />
-                        <CardBody>
 
-                            <CardSubtitle>
-                                <span className="text-info">
-                                    {post.date}
-                                </span> by {' '}
-                                <span className="text-info">{post.author}</span>
-                            </CardSubtitle>
+            <Card>
+                <GatsbyImage className="card-image-top" image={fluid} alt="描述图片内容的文本" />
+                <CardBody>
 
-                            <div dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }} />
+                    <CardSubtitle>
+                        <span className="text-info">
+                            {post.date}
+                        </span> by {' '}
+                        <span className="text-info">{post.author}</span>
+                    </CardSubtitle>
 
-                            <ul className="post-tags">
-                                {post.tags.map(tag => (
-                                    <li key={tag}>
-                                        <Link to={`/tags/${slugify(tag)}`}>
-                                            <Badge color="primary">{tag}</Badge>
+                    <div dangerouslySetInnerHTML={{ __html: data.markdownRemark.html }} />
 
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </CardBody>
+                    <ul className="post-tags">
+                        {post.tags.map(tag => (
+                            <li key={tag}>
+                                <Link to={`/tags/${slugify(tag)}`}>
+                                    <Badge color="primary">{tag}</Badge>
 
-                    </Card>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </CardBody>
 
-                </Col>
-                <Col md="4">
-                    <Sidebar />
-                </Col>
-            </Row>
+            </Card>
+
+
         </Layout>
     )
 }

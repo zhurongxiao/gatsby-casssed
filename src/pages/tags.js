@@ -7,9 +7,8 @@ import Seo from "../components/seo"
 
 
 const TagsPage = () => (
-    <Layout>
+    <Layout pageTitle="All Tags">
         <Seo title="Tags" />
-        <h1>Tags page</h1>
     </Layout>
 )
 
