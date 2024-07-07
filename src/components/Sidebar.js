@@ -1,11 +1,77 @@
 import React from 'react'
-import { Card, CardTitle, CardBody, Form, FormGroup, Input } from 'reactstrap'
+import { Card, CardTitle, CardText, CardBody, Form, FormGroup, Input } from 'reactstrap'
 import { graphql, Link, StaticQuery } from 'gatsby'
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
-const Sidebar = () => (
+const Sidebar = ({ author, authorFluild }) => (
 
     <div>
+        {author && (
+            <Card>
+                <GatsbyImage className="card-image-top" image={authorFluild} alt="描述图片内容的文本" />
+                <CardBody>
+                    <CardTitle className="text-center text-uppercase mb-3">
+                        {author.name}
+                    </CardTitle>
+                    <CardText>{author.bio}</CardText>
+                    <div className='author-social-links text-center'>
+                        <ul>
+                            <li>
+                                <a
+                                    href={author.facebook}
+                                    targe="_blank"
+                                    rel="noopener noreferrer"
+                                    className="facebook"
+                                >
+                                    <i className="fab fa-facebook-f fa-lg" />
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href={author.twitter}
+                                    targe="_blank"
+                                    rel="noopener noreferrer"
+                                    className="twitter"
+                                >
+                                    <i className="fab fa-twitter fa-lg" />
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href={author.instagram}
+                                    targe="_blank"
+                                    rel="noopener noreferrer"
+                                    className="instagram"
+                                >
+                                    <i className="fab fa-instagram fa-lg" />
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href={author.google}
+                                    targe="_blank"
+                                    rel="noopener noreferrer"
+                                    className="google"
+                                >
+                                    <i className="fab fa-google fa-lg" />
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href={author.linkedin}
+                                    targe="_blank"
+                                    rel="noopener noreferrer"
+                                    className="linkedin"
+                                >
+                                    <i className="fab fa-linkedin fa-lg" />
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </CardBody>
+            </Card>
+        )}
         <Card>
             <CardBody>
                 <CardTitle className="text-center text-uppercase mb-3">Newsletrter</CardTitle>

@@ -12,6 +12,7 @@
 
 const { slugify } = require('./src/util/utilityFunctions')
 const path = require('path')
+const authors = require('./src/util/authors')
 
 
 // onCreateNode 是Gatsby提供的一种API钩子，每当Gatsby创建或更新一个节点时，它就会自动触发这个函数。
@@ -81,7 +82,10 @@ exports.createPages = ({ actions, graphql }) => {
         // 传递给页面组件的上下文数据
         context: {
           // 将当前文章的slug传递给模板，用于定位和渲染具体文章内容
-          slug: node.fields.slug
+          slug: node.fields.slug,
+          //Find author imageUrl from authors and pass it to the single post template
+          // 从作者中找到作者 imageUrl 并将其传递给单个帖子模板
+          imageUrl: authors.find(x => x.name === node.frontmatter.author).imageUrl,
         }
       })
     })

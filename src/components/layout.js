@@ -9,7 +9,7 @@ import { Row, Col } from 'react-bootstrap'
 import Sidebar from "../components/Sidebar"
 
 
-const Layout = ({ children, pageTitle }) => (
+const Layout = ({ authorImageFluid, children, pageTitle, postAuthor }) => (
   <StaticQuery
     query={graphql`
       query SiteTitleQuery {  
@@ -37,7 +37,7 @@ const Layout = ({ children, pageTitle }) => (
               {children}
             </Col>
             <Col md="4">
-              <Sidebar />
+              <Sidebar author={postAuthor} authorFluild={authorImageFluid} />
             </Col>
           </Row>
         </div>

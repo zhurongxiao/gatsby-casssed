@@ -4,19 +4,23 @@
 import React from 'react'
 import Layout from '../components/layout'
 import { graphql, Link } from 'gatsby'
-import SEO from '../components/seo'
 import { Card, CardBody, CardSubtitle, Badge } from 'react-bootstrap'
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
 import { slugify } from '../util/utilityFunctions'
+import authors from '../util/authors'
 
 const SinglePost = ({ data }) => {
     const post = data.markdownRemark.frontmatter
+    const post1 = data.file
     const fluid = getImage(post.image) // Access node.frontmatter.image inside the loop
+    const authorImageFluid = getImage(post1)
 
+    // const authorImageFluid = getImage(post1)
+    const author = authors.find(x => x.name === post.author)
     return (
-        <Layout pageTitle={post.title}>
-            <SEO title={post.title} />
+        <Layout pageTitle={post.title} postAuthor={author} authorImageFluid={authorImageFluid}>
+            {/* <SEO title={post.title} /> */}
 
             <Card>
                 <GatsbyImage className="card-image-top" image={fluid} alt="描述图片内容的文本" />
@@ -51,7 +55,7 @@ const SinglePost = ({ data }) => {
 }
 
 export const postQuery = graphql`
-    query blogPostBySlug($slug: String!) {
+    query blogPostBySlug($slug: String!, $imageUrl: String!) {
         markdownRemark(fields: { slug: {eq: $slug}}){
             id
             html
@@ -67,6 +71,11 @@ export const postQuery = graphql`
                 }
             }
         }
+            file(relativePath: {eq: $imageUrl}){
+                childImageSharp{
+                    gatsbyImageData(width: 300)
+                }
+            }
     }`
 
 export default SinglePost
