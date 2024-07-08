@@ -13,6 +13,9 @@
 const { slugify } = require('./src/util/utilityFunctions')
 const path = require('path')
 const authors = require('./src/util/authors')
+const _ = require('lodash')
+
+
 
 
 // onCreateNode 是Gatsby提供的一种API钩子，每当Gatsby创建或更新一个节点时，它就会自动触发这个函数。
@@ -42,7 +45,11 @@ exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
 
   // 解析出单篇帖子模板文件的绝对路径，这个模板将用于生成每篇Markdown文章的页面
-  const singlePostTemplate = path.resolve('src/templates/single-post.js')
+  const templates = {
+    singlePost: path.resolve('src/templates/single-post.js'),
+    tagsPage: path.resolve('src/templates/tags-page.js'),
+
+  }
 
   // 使用graphql函数执行一个GraphQL查询，目的是获取所有Markdown格式的文章信息
   return graphql(`
@@ -78,7 +85,7 @@ exports.createPages = ({ actions, graphql }) => {
         // 页面的路径
         path: node.fields.slug,
         // 页面组件模板路径
-        component: singlePostTemplate,
+        component: templates.singlePost,
         // 传递给页面组件的上下文数据
         context: {
           // 将当前文章的slug传递给模板，用于定位和渲染具体文章内容
@@ -86,13 +93,54 @@ exports.createPages = ({ actions, graphql }) => {
           //Find author imageUrl from authors and pass it to the single post template
           // 从作者中找到作者 imageUrl 并将其传递给单个帖子模板
           imageUrl: authors.find(x => x.name === node.frontmatter.author).imageUrl,
-        }
+        },
       })
     })
-  })
+
+
+    //获取标签
+    let tags = []
+
+    // 遍历所有文章边缘（edges），即所有MarkdownRemark节点
+    _.each(posts, edge => {
+      // 如果当前文章有标签（tags）属性
+      if (_.get(edge, 'node.frontmatter.tags')) {
+        // 将文章的所有标签添加到 tags 数组中  
+        tags = tags.concat(edge.node.frontmatter.tags)
+      }
+
+    })
+
+    // 创建一个对象来存储每个标签对应的文章数量
+    let tagPostCounts = {}
+
+    // 遍历 tags 数组
+    tags.forEach(tag => {
+      // 对于每一个标签，如果 tagPostCounts 中已经有这个标签，则计数加一；
+      //如果没有，则初始化计数为1
+      tagPostCounts[tag] = (tagPostCounts[tag] || 0) + 1
+
+      // 使用 lodash 的 uniq 方法去重，确保 tags 数组中没有重复的标签
+      tags = _.uniq(tags)
+
+      // 创建一个标签页面
+      createPage({
+        // 设置页面路径为 /tags，这将是一个汇总所有标签的页面
+        path: `/tags`,
+        // 设置页面组件模板为 tagsPage.js
+        component: templates.tagsPage,
+        // 设置页面上下文，包括所有标签和每个标签对应的文章数量
+        context: {
+          tags,
+          tagPostCounts
+        }
+      })
+
+    })
+  }
+
+  )
 }
-
-
 // // 查询Markdown类型的全部数据
 // allMarkdownRemark {
 //   // 获取每篇文章的关联信息
