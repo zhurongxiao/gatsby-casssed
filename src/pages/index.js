@@ -36,7 +36,8 @@ const IndexPage = () => {
 
 const indexQuery = graphql`
   query indexQuery{
-    allMarkdownRemark(sort: {frontmatter: {date: DESC}}){
+    allMarkdownRemark(sort: {frontmatter: {date: DESC}}
+      limit: 2){
       edges{
         node{
           id
