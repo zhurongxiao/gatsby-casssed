@@ -48,6 +48,7 @@ exports.createPages = ({ actions, graphql }) => {
   const templates = {
     singlePost: path.resolve('src/templates/single-post.js'),
     tagsPage: path.resolve('src/templates/tags-page.js'),
+    tagPosts: path.resolve('src/templates/tag-posts.js'),
 
   }
 
@@ -135,11 +136,25 @@ exports.createPages = ({ actions, graphql }) => {
           tagPostCounts
         }
       })
-
     })
-  }
 
-  )
+    //Create tag posts pages
+    tags.forEach(tag => {
+      createPage({
+        // 设置页面路径为 /tags/:tag，其中 :tag 是一个占位符，表示当前标签的名称
+        path: `/tag/${slugify(tag)}`,
+        // 设置页面组件模板为 tagsPosts.js
+        component: templates.tagPosts,
+        // 设置页面上下文，包括当前标签的名称和所有文章
+        context: {
+          tag,
+
+        }
+      })
+    })
+  })
+
+
 }
 // // 查询Markdown类型的全部数据
 // allMarkdownRemark {

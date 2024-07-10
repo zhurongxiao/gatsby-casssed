@@ -14,8 +14,8 @@ const tagsPage = ({ pageContext }) => {
                 {tags.map(tag => (
                     <li key={tag} style={{ marginBottom: '10px' }}>
                         {/* 渲染一个 Button 组件，其颜色为 primary，链接到以标签名生成的 slug URL */}
-                        <Button color="primary" href={`/tags/${slugify(tag)}`}>
-                            {tag} <Badge color='light'>{tagPostCounts[tag]}</Badge>
+                        <Button color="primary" href={`/tag/${slugify(tag)}`}>
+                            {tag} <Badge color="light">{tagPostCounts[tag]}</Badge>
                         </Button>
 
                     </li>
