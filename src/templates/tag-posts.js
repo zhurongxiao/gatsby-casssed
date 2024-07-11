@@ -65,15 +65,15 @@ export const tagQuery = graphql`
     }
 
 `
+//    query($tag: String!) { // 定义一个变量 $tag，类型为 String
+//        allMarkdownRemark( // 查询所有 Markdown 格式的文章
+//            sort: { frontmatter: { date: DESC } } // 按日期降序排序
+//     filter: { frontmatter: { tags: { in: [$tag] } } } // 过滤出包含特定标签的文章
+// ) {
+//     totalCount // 返回文章总数
 
-{/*
-    query($tag: String!) { // 定义一个变量 $tag，类型为 String
-        allMarkdownRemark( // 查询所有 Markdown 格式的文章
-            sort: { frontmatter: { date: DESC } } // 按日期降序排序
-            filter: { frontmatter: { tags: { in: [$tag] } } } // 过滤出包含特定标签的文章
-        ) {
-            totalCount // 返回文章总数
-    
- */}
+
+
 
 export default tagPosts
+

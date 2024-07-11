@@ -154,21 +154,31 @@ exports.createPages = ({ actions, graphql }) => {
       })
     })
 
+
+    // 定义每页显示的文章数量
     const postsPerPage = 2
+    // 计算总页数，向上取整确保即使文章数量不能被每页文章数整除也能覆盖所有文章
     const numberOfPages = Math.ceil(posts.length / postsPerPage)
 
+    // 使用 Array.from 生成一个数组，长度等于总页数，用于遍历每一页
     Array.from({ length: numberOfPages }).forEach((_, index) => {
+      // 判断是否为第一页
       const isFirstPage = index === 0
+      // 当前页码，从1开始计数
       const currentPage = index + 1
-
+      // 如果是第一页，不执行下面的代码块，通常第一页的处理可能不同，或者已经在其他地方处理过了
       if (isFirstPage) return
-
+      // 使用 createPage 方法创建一个新的页面
       createPage({
+        // 设置页面的路径，例如 /page/2, /page/3 等
         path: `/page/${currentPage}`,
         component: templates.postList,
         context: {
+          // 每页显示的文章数量
           limit: postsPerPage,
+          // 跳过的文章数量，用于分页查询，例如第二页跳过前两篇文章
           skip: index * postsPerPage,
+          // 当前页码，用于显示当前是第几页
           currentPage,
         },
       })
