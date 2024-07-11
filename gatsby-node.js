@@ -180,6 +180,7 @@ exports.createPages = ({ actions, graphql }) => {
           skip: index * postsPerPage,
           // 当前页码，用于显示当前是第几页
           currentPage,
+          numberOfPages
         },
       })
     })

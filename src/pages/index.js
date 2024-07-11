@@ -5,9 +5,12 @@ import { getImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import Post from "../components/Post"
+import PaginationLinks from '../components/PaginationLinks'
 
 const IndexPage = () => {
   const data = useStaticQuery(indexQuery);
+  const postsPerPage = 2
+  let numberOfPages
 
   return (
     <Layout pageTitle="CodeBlog">
@@ -16,6 +19,7 @@ const IndexPage = () => {
       <div>
         {data.allMarkdownRemark.edges.map(({ node }) => {
           const fluid = getImage(node.frontmatter.image);
+          numberOfPages = Math.ceil(data.allMarkdownRemark.totalCount / postsPerPage)
           return (
             <Post
               key={node.id}
@@ -29,6 +33,8 @@ const IndexPage = () => {
             />
           )
         })}
+        <PaginationLinks currentPage={1} numberOfPages={numberOfPages} />
+
       </div>
     </Layout>
   );
@@ -38,6 +44,7 @@ const indexQuery = graphql`
   query indexQuery{
     allMarkdownRemark(sort: {frontmatter: {date: DESC}}
       limit: 2){
+      totalCount
       edges{
         node{
           id
